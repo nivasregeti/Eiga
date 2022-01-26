@@ -1,0 +1,16 @@
+﻿
+@model Eiga.Models.Customer
+@{
+        ViewBag.Title = Model.CustomerName;
+        Layout = "~/Views/Shared/_Layout.cshtml";
+    }
+
+<h2>@Model.CustomerName</h2>
+<ul>
+    <li>MembershipType  : @Model.MembershipType.MembershipTypeName</li>
+    @if (Model.CustomerBirthDate.HasValue)
+    {
+        <li>Birthdate   :  @Model.CustomerBirthDate.Value.ToShortDateString()</li>
+
+    }
+</ul>

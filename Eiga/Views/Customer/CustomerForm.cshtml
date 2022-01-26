@@ -1,0 +1,48 @@
+﻿@model Eiga.ViewModels.CustomerFormViewModel
+@{
+    ViewBag.Title = "New";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>New Customer</h2>
+
+@*in the below code, @Html.BeginForm() is equivalent to <form>, usimg the 'using()',object returned from @Html.BeginForm() 'll be disposed
+    and in the disposemethod, it'll simply render the closing </form> tag. So to get </form> tag, we have to use using()*@
+
+@using (@Html.BeginForm("Save", "Customer"))
+{
+    @Html.ValidationSummary(true, "Please fix the following errors")
+    <div class="form-group">
+        @Html.LabelFor(m => m.Customer.CustomerName)
+        @Html.TextBoxFor(m => m.Customer.CustomerName, new { @class = "form-control" })  @*"form-control" is a predefined bootstrap class*@
+        @Html.ValidationMessageFor(m => m.Customer.CustomerName)
+    </div>
+    @*two ways of displaying another name one adding a data annotation like we did for customer name in Customer.cs,
+        The other way is to use <label></label> instead of @Html.LabelFor()*@
+    <div class="form-group">
+        @Html.LabelFor(m => m.Customer.MembershipTypeId)
+        @Html.DropDownListFor(m => m.Customer.MembershipTypeId, new SelectList(Model.MembershipTypes, "Id", "MembershipTypeName"), "Select Membership Type", new { @class = "form-control" }) @*"form-control" is a predefined bootstrap class*@
+        @Html.ValidationMessageFor(m => m.Customer.MembershipTypeId)
+    </div>
+
+    <div class="form-group">
+        <label for="CustomerBirthDate ">Date of Birth</label>
+        @Html.TextBoxFor(m => m.Customer.CustomerBirthDate, "{0:MM/dd/yyyy}", new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Customer.CustomerBirthDate)
+    </div>
+
+    <div class="checkbox">
+        <label>
+            @Html.CheckBoxFor(m => m.Customer.IsSubscribedToNewsLetter) Subscribed to NewsLetter?
+        </label>
+    </div>
+
+    @Html.HiddenFor(m => m.Customer.CustomerId)
+    @Html.AntiForgeryToken()
+    <button type="submit" class="btn btn-primary">Save</button>
+}
+
+@section scripts
+{
+    @Scripts.Render("~/bundles/jqueryval")
+}
